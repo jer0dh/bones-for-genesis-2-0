@@ -1,6 +1,17 @@
 /*********************
 SIZES
 *********************/
+//Bootstrap grid column sizes:
+// $col_content + $col_primary should equal 12
+// $col_content_sidebar_wrap + $col_sidebar_secondary should equal 12
+
+$col_content : 9;
+$col_sidebar_primary: 3;
+$col_sidebar_secondary: 3;
+$col_content_sidebar_wrap: 9;
+
+
+
 $siteWidth: 60em; // Useful for fixed width sites, as well as for limiting the max-width of fluid sites
 
 @mixin breakpoint($point) {

@@ -9,7 +9,16 @@ module.exports = function(grunt) {
 				src: ['build']
 			}
 		},
-
+        sass: {
+            options: {
+                sourceMap: true
+            },
+            dist: {
+                files: {
+                    'build/css/style.css': 'sass/style.scss'
+                }
+            }
+        },
 		csscomb: {
 			options: {
 				config: 'sass/csscomb.json'
@@ -19,20 +28,6 @@ module.exports = function(grunt) {
 	            cwd: 'sass/',
 	            src: ['**/*.scss', '!_mixins.scss', '!_variables.scss'],
 	            dest: 'sass/'
-			}
-		},
-
-		sass: {
-			options: {
-				compass: true,
-				style: 'expanded',
-				precision: 3,
-				sourcemap: 'none'
-			},
-			build: {
-				files: {
-					'build/css/style.css': 'sass/style.scss'
-				}
 			}
 		},
 
@@ -82,7 +77,7 @@ module.exports = function(grunt) {
 
 		uglify: {
 			options: {
-				preserveComments: 'some',
+				preserveComments: 'some'
 			},
 			build: {
 				files: {
@@ -136,14 +131,6 @@ module.exports = function(grunt) {
 				}
 			},
 
-			css: {
-				files: ['sass/**/*.scss'],
-				tasks: ['sass'],
-				options: {
-					spawn: false
-				}
-			},
-
 			images: {
 				files: ['images/**/*'],
 				tasks: ['newer:imagemin'],
@@ -166,7 +153,7 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-newer');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-csscomb');
-	grunt.loadNpmTasks('grunt-contrib-sass');
+    grunt.loadNpmTasks('grunt-sass');
 	grunt.loadNpmTasks('grunt-grunticon');
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');

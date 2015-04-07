@@ -7,17 +7,73 @@
 // .full-width-content
 
 .site-container {
+  @include container-fixed();
 }
 
-.content-sidebar-wrap {
-	@extend %clearfix;
+ .page .site-inner, .single-page-section {
+  @include make-row;
 }
 
+/* .content-sidebar-wrap{
+   border: 2px solid #006400;
+ }
+.sidebar {
+  border: 2px dotted #d4081a;
+}
 .content {
+  border: 2px dotted #B10DC9;
+}*/
+
+.content-sidebar-sidebar .content-sidebar-wrap,
+.sidebar-sidebar-content .content-sidebar-wrap,
+.sidebar-content-sidebar .content-sidebar-wrap {
+  @include make-md-column($col_content_sidebar_wrap);
+}
+
+.sidebar-sidebar-content .content-sidebar-wrap,
+.sidebar-content-sidebar .content-sidebar-wrap,
+.content-sidebar-sidebar .content-sidebar-wrap,{
+   //@include make-row; - markup needs another div for this to work right
+    @extend %clearfix;
+  // remove the extra gutter space that make-row would have done but with margins
+  padding-left: 0;
+  padding-right: 0;
+}
+//secondary sidebar is to the left of content-sidebar-wrap (markup for secondary sidebar is after content-sidebar-wrap)
+.sidebar-content-sidebar .content-sidebar-wrap,
+.sidebar-sidebar-content .content-sidebar-wrap,{
+    @include make-md-column-push($col_sidebar_secondary);
+}
+
+
+.content-sidebar .content,
+.sidebar-content .content,
+.content-sidebar-sidebar .content,
+.sidebar-content-sidebar .content,
+.sidebar-sidebar-content .content,{
+  @include make-md-column($col_content);
+
+}
+
+//primary sidebar is to the left of content (markup for primary sidebar is after content)
+.sidebar-content .content,
+.sidebar-sidebar-content .content {
+  @include make-md-column-push($col_sidebar_primary);
 }
 
 .sidebar-primary {
+  @include make-md-column($col_sidebar_primary);
+}
+.sidebar-content .sidebar-primary,
+.sidebar-sidebar-content .sidebar-primary {
+  @include make-md-column-pull($col_content);
 }
 
 .sidebar-secondary {
+  @include make-md-column($col_sidebar_secondary);
+}
+
+.sidebar-content-sidebar .sidebar-secondary,
+.sidebar-sidebar-content .sidebar-secondary {
+  @include make-md-column-pull($col_content_sidebar_wrap);
 }
