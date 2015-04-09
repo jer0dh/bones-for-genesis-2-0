@@ -65,51 +65,84 @@ $grid-columns: 12;
 SIZES
 *********************/
 //Bootstrap grid column sizes:
-// $col_content + $col_primary should equal $grid_columns
-// $col_content_sidebar_wrap + $col_sidebar_secondary should equal $grid_columns
 
-$col_content_of_screen : 6;
+// padding on the left and right of the full page
+$page_padding: 10px;
+
+// Calculating the column sizes for content-sidebar-wrap, sidebars, and content
+// Genesis markup is always the following with the aside (sidebars) elements optional
+// <div class="site-inner">
+//   <div class="content-sidebar-wrap">
+//      <main class="content" />>
+//      <aside class="sidebar-primary" />
+//   </div>
+//   <aside class="sidebar-secondary" />
+// </div>
+//  This markup is in the mobile-first order, in that it is in the order we would
+//  want if each element was full width.  We use Bootstraps push and pull mixins to change
+//  the order on larger screens.
+
+// number of columns in a grid.  Default is 12.
+// 1/12 of the screen is sometimes too big an offset.  To decrease, increase the $grid-columns.
+// or set col_offset to a fraction of 1..This might cause some alignment issues with other
+// elements using the bootstrap md-col-x markup.
+$grid-columns: 12;
+
+// .content element is actually nested in the content-sidebar-wrap. The $col_content_of_screen
+// is the actual number of columns you want the .content element to be as if it wasn't
+// nested.
 // Note: this size is for layouts with two sidebars.  Content width will larger if only one sidebar
+$col_content_of_screen : 6;
+
 $col_offset: 1; //zero => columns are flush to each other.
 
-$page_padding: 10px;
-// padding on the left and right of the full page
-
 //assuming primary and sidebar are equal
-$col_sidebar_secondary: ($grid-columns - $col_content_of_screen) / 2;
-$col_content_sidebar_wrap: $col_content_of_screen + $col_sidebar_secondary; // add width of sidebar to wrap
+$col_sidebar_secondary: ($grid-columns - $col_content_of_screen - (2 * $col_offset)) / 2;
+
+// add width of sidebar to wrap
+$col_content_sidebar_wrap : $col_content_of_screen + $col_sidebar_secondary + $col_offset;
+
 //since content_sidebar_wrap is a nested row, we must compute it's size based on inside content_sidebar_wrap
-$col_content: $col_content_of_screen * $grid-columns / $col_content_sidebar_wrap;
-$col_sidebar_primary: $grid-columns - $col_content;
-$col_offset_content_sidebar_wrap: 0;
+$col_content : $col_content_of_screen * $grid-columns / $col_content_sidebar_wrap;
 
-@if $col_offset != 0 {
+// determine offset col inside content sidebar wrap
+$col_offset_content_sidebar_wrap : $col_offset * $grid-columns / $col_content_sidebar_wrap;
 
-  // for layouts with two sidebars
-   $col_sidebar_secondary: ($grid-columns - $col_content_of_screen - (2 * $col_offset)) / 2;
-   $col_content_sidebar_wrap : $col_content_of_screen + $col_sidebar_secondary + $col_offset;
-   $col_content : $col_content_of_screen * $grid-columns / $col_content_sidebar_wrap;
-   // determine offset col inside content sidebar wrap
-   $col_offset_content_sidebar_wrap : $col_offset * $grid-columns / $col_content_sidebar_wrap;
-   $col_sidebar_primary: $grid-columns - $col_content - $col_offset_content_sidebar_wrap;
+//The col size for the primary sidebar inside the wrap would then be
+$col_sidebar_primary: $grid-columns - $col_content - $col_offset_content_sidebar_wrap;
 
-  //for layouts with only primary sidebar
-  $col_sidebar_primary_single_sidebar : $col_sidebar_secondary;
-  $col_content_single_sidebar : $grid-columns - $col_sidebar_secondary - $col_offset;
-}
+//for layouts with only primary sidebar
+$col_sidebar_primary_single_sidebar : $col_sidebar_secondary;
+$col_content_single_sidebar : $grid-columns - $col_sidebar_secondary - $col_offset;
 
+
+// Uncomment and add your own values to override above calculations:
+
+// row in div site-inner.  Sum should equal to $grid-columns
+//$col_sidebar_secondary: 2;
+//$col_content_sidebar_wrap: 9;
+//$col_offset: 1;
+
+// row in div content_sidebar_wrap.  Sum should equal to $grid-columns
+//$col_content: 8;
+//$col_sidebar_primary: 2.66667;
+//$col_offset_content_sidebar_wrap: 1.3333;
+
+// row in div content_sidebar_wrap in sidebar-content or content-sidebar layouts
+// Sum of below plus $col_offset should equal to $grid-columns
+//$col_sidebar_primary_single_sidebar: 2;
+//$col_content_single_sidebar: 9
 
 @debug "$col_sidebar_secondary is " $col_sidebar_secondary;
 @debug "$col_content_sidebar_wrap is " $col_content_sidebar_wrap;
-@debug "$col_content is " $col_content;
-@debug "$col_offset_content_sidebar_wrap is " $col_offset_content_sidebar_wrap;
-@debug "$col_sidebar_primary is " $col_sidebar_primary;
 
-// Uncomment and add your own values to override above calculations:
-//$col_sidebar_primary: 0;
-//$col_sidebar_secondary: 0;
-//$col_content_sidebar_wrap: 0;
-//$col_content: 0;
+@debug "$col_content is " $col_content;
+@debug "$col_sidebar_primary is " $col_sidebar_primary;
+@debug "$col_offset_content_sidebar_wrap is " $col_offset_content_sidebar_wrap;
+
+@debug "$col_sidebar_primary_single_sidebar is " $col_sidebar_primary_single_sidebar;
+@debug "$col_content_single_sidebar is " $col_content_single_sidebar;
+
 
 $md_col_header_title: 8;
 $md_col_header_widget: 4;

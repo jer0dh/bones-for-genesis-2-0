@@ -25,16 +25,6 @@
 .content {
   border: 2px dotted #B10DC9;
 }*/
-/*
-@if $col_offset != 0 {
-  $i : $col_offset / 2;
-  $col_offset_lg : ceil($i);
-  $col_offset_sm : floor($i);
-  } @else {
-  $col_offset_lg : 0;
-  $col_offset_sm : 0;
-}
-*/
 
 .content-sidebar-sidebar .content-sidebar-wrap,
 .sidebar-sidebar-content .content-sidebar-wrap,
