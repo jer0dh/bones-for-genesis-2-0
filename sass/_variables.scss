@@ -1,18 +1,3 @@
-/*********************
-SIZES
-*********************/
-//Bootstrap grid column sizes:
-// $col_content + $col_primary should equal 12
-// $col_content_sidebar_wrap + $col_sidebar_secondary should equal 12
-
-$col_content : 9;
-$col_sidebar_primary: 3;
-$col_sidebar_secondary: 3;
-$col_content_sidebar_wrap: 9;
-
-
-
-$siteWidth: 60em; // Useful for fixed width sites, as well as for limiting the max-width of fluid sites
 
 @mixin breakpoint($point) {
 	@if $point == full {
@@ -65,5 +50,75 @@ $foursquare: #0072b1;
 $rss: #f60;
 
 /*********************
-TYPOGRAPHY - http://cssfontstack.com/
+BootStrap variables
 *********************/
+@import 'variables-bootstrap';
+
+//override variables as needed
+//** Background color for `<body>`.
+$body-bg:               $gray_lighter;
+$grid-gutter-width:         60px;
+$grid-columns: 12;
+
+
+/*********************
+SIZES
+*********************/
+//Bootstrap grid column sizes:
+// $col_content + $col_primary should equal $grid_columns
+// $col_content_sidebar_wrap + $col_sidebar_secondary should equal $grid_columns
+
+$col_content_of_screen : 6;
+// Note: this size is for layouts with two sidebars.  Content width will larger if only one sidebar
+$col_offset: 1; //zero => columns are flush to each other.
+
+$page_padding: 10px;
+// padding on the left and right of the full page
+
+//assuming primary and sidebar are equal
+$col_sidebar_secondary: ($grid-columns - $col_content_of_screen) / 2;
+$col_content_sidebar_wrap: $col_content_of_screen + $col_sidebar_secondary; // add width of sidebar to wrap
+//since content_sidebar_wrap is a nested row, we must compute it's size based on inside content_sidebar_wrap
+$col_content: $col_content_of_screen * $grid-columns / $col_content_sidebar_wrap;
+$col_sidebar_primary: $grid-columns - $col_content;
+$col_offset_content_sidebar_wrap: 0;
+
+@if $col_offset != 0 {
+
+  // for layouts with two sidebars
+   $col_sidebar_secondary: ($grid-columns - $col_content_of_screen - (2 * $col_offset)) / 2;
+   $col_content_sidebar_wrap : $col_content_of_screen + $col_sidebar_secondary + $col_offset;
+   $col_content : $col_content_of_screen * $grid-columns / $col_content_sidebar_wrap;
+   // determine offset col inside content sidebar wrap
+   $col_offset_content_sidebar_wrap : $col_offset * $grid-columns / $col_content_sidebar_wrap;
+   $col_sidebar_primary: $grid-columns - $col_content - $col_offset_content_sidebar_wrap;
+
+  //for layouts with only primary sidebar
+  $col_sidebar_primary_single_sidebar : $col_sidebar_secondary;
+  $col_content_single_sidebar : $grid-columns - $col_sidebar_secondary - $col_offset;
+}
+
+
+@debug "$col_sidebar_secondary is " $col_sidebar_secondary;
+@debug "$col_content_sidebar_wrap is " $col_content_sidebar_wrap;
+@debug "$col_content is " $col_content;
+@debug "$col_offset_content_sidebar_wrap is " $col_offset_content_sidebar_wrap;
+@debug "$col_sidebar_primary is " $col_sidebar_primary;
+
+// Uncomment and add your own values to override above calculations:
+//$col_sidebar_primary: 0;
+//$col_sidebar_secondary: 0;
+//$col_content_sidebar_wrap: 0;
+//$col_content: 0;
+
+$md_col_header_title: 8;
+$md_col_header_widget: 4;
+
+$siteWidth: 60em; // Useful for fixed width sites, as well as for limiting the max-width of fluid sites
+
+$header_bg: #fff;
+$content_bg: #fff;
+$sidebar_bg: #fff;
+
+
+

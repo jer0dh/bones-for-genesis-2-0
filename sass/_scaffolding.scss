@@ -1,0 +1,15 @@
+
+
+.content {
+   background-color: $content_bg;
+ }
+
+.sidebar {
+  background-color: $sidebar_bg;
+}
+
+.site-header {
+  > .wrap {
+    background-color: $header_bg;
+  }
+}

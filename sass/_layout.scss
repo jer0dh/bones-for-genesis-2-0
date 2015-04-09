@@ -8,6 +8,8 @@
 
 .site-container {
   @include container-fixed();
+  padding-left: ($grid-gutter-width / 2) + $page-padding;
+  padding-right: ($grid-gutter-width / 2) + $page-padding;
 }
 
  .page .site-inner, .single-page-section {
@@ -23,11 +25,76 @@
 .content {
   border: 2px dotted #B10DC9;
 }*/
+/*
+@if $col_offset != 0 {
+  $i : $col_offset / 2;
+  $col_offset_lg : ceil($i);
+  $col_offset_sm : floor($i);
+  } @else {
+  $col_offset_lg : 0;
+  $col_offset_sm : 0;
+}
+*/
 
 .content-sidebar-sidebar .content-sidebar-wrap,
 .sidebar-sidebar-content .content-sidebar-wrap,
 .sidebar-content-sidebar .content-sidebar-wrap {
-  @include make-md-column($col_content_sidebar_wrap);
+    @include make-md-column($col_content_sidebar_wrap);
+}
+
+.content-sidebar-sidebar .content,
+.sidebar-content-sidebar .content,
+.sidebar-sidebar-content .content,{
+    @include make-md-column($col_content);
+}
+
+.content-sidebar .content,
+.sidebar-content .content{
+    @include make-md-column($col_content_single_sidebar);
+  }
+.content-sidebar-sidebar .sidebar-primary,
+.sidebar-sidebar-content .sidebar-primary,
+.sidebar-content-sidebar .sidebar-primary {
+     @include make-md-column($col_sidebar-primary );
+}
+
+.content-sidebar .sidebar-primary,
+.sidebar-content .sidebar-primary {
+  @include make-md-column($col_sidebar_primary_single_sidebar);
+}
+
+.sidebar-secondary {
+    @include make-md-column($col_sidebar-secondary);
+}
+
+.full-width-content .content {
+  @include make-md-column($grid-columns);
+
+}
+
+@if $col_offset != 0 {
+  .sidebar-sidebar-content .content-sidebar-wrap,
+  .sidebar-content-sidebar .content-sidebar-wrap {
+    @include make-md-column-offset($col_offset);
+  }
+
+  .sidebar-content-sidebar .sidebar-primary,
+  .content-sidebar-sidebar .sidebar-primary {
+    @include make-md-column-offset($col_offset_content_sidebar_wrap);
+  }
+  .content-sidebar .sidebar-primary {
+    @include make-md-column-offset($col_offset);
+  }
+
+  .content-sidebar-sidebar .sidebar-secondary {
+    @include make-md-column-offset($col_offset);
+  }
+  .sidebar-sidebar-content .content {
+    @include make-md-column-offset($col_offset_content_sidebar_wrap);
+  }
+  .sidebar-content .content {
+    @include make-md-column-offset($col_offset);
+  }
 }
 
 .sidebar-sidebar-content .content-sidebar-wrap,
@@ -39,6 +106,7 @@
   padding-left: 0;
   padding-right: 0;
 }
+
 //secondary sidebar is to the left of content-sidebar-wrap (markup for secondary sidebar is after content-sidebar-wrap)
 .sidebar-content-sidebar .content-sidebar-wrap,
 .sidebar-sidebar-content .content-sidebar-wrap,{
@@ -46,34 +114,24 @@
 }
 
 
-.content-sidebar .content,
-.sidebar-content .content,
-.content-sidebar-sidebar .content,
-.sidebar-content-sidebar .content,
-.sidebar-sidebar-content .content,{
-  @include make-md-column($col_content);
-
-}
-
 //primary sidebar is to the left of content (markup for primary sidebar is after content)
-.sidebar-content .content,
 .sidebar-sidebar-content .content {
   @include make-md-column-push($col_sidebar_primary);
 }
-
-.sidebar-primary {
-  @include make-md-column($col_sidebar_primary);
+.sidebar-content .content {
+  @include make-md-column-push($col_sidebar_primary_single_sidebar);
 }
-.sidebar-content .sidebar-primary,
+
 .sidebar-sidebar-content .sidebar-primary {
-  @include make-md-column-pull($col_content);
+  @include make-md-column-pull($col_content + $col_offset_content_sidebar_wrap);
 }
-
-.sidebar-secondary {
-  @include make-md-column($col_sidebar_secondary);
+.sidebar-content .sidebar-primary{
+  @include make-md-column-pull($col_content_single_sidebar + $col_offset);
 }
 
 .sidebar-content-sidebar .sidebar-secondary,
 .sidebar-sidebar-content .sidebar-secondary {
-  @include make-md-column-pull($col_content_sidebar_wrap);
+  @include make-md-column-pull($col_content_sidebar_wrap + $col_offset);
 }
+
+

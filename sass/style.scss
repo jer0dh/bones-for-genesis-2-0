@@ -2,27 +2,23 @@
 // @import 'compass/css3';
 
 // Colors
-@import '../bower_components/Colors/sass/variables';
+//@import '../bower_components/Colors/sass/variables';
 
 // Variables & Mixins
 @import 'variables';
 @import 'mixins';
 @import 'bootstrap_custom';
+@import 'layout';
+@import 'scaffolding';
+
 /*
 // Normalize, Clearfix, & Toolkit
 @import '../bower_components/normalize-scss/normalize.scss';
 @import 'clearfix';
 @import 'toolkit';
+*/
 
-// Universal Box-Sizing (http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/)
-html {
-	box-sizing: border-box;
-  //http://blog.w3conversions.com/2015/03/all-your-base-are-belong-to-us-%E2%80%94-or-what-base-size-do-em-based-media-queries-use/
-    font-size: 100%;
-}
-body {
-  font-size: 100%;
-}
+/*
 *,
 *:before,
 *:after {
@@ -31,21 +27,32 @@ body {
 
 // Sitewide Styles
 @import 'grid'; */
-@import 'layout';
-/*@import 'type';
-@import 'headings';
-@import 'objects-and-images';
-@import 'buttons';
-@import 'forms';
 
+/*@import 'type';
+@import 'headings'; */
+@import 'objects-and-images';
+/*@import 'buttons';
+@import 'forms';
+*/
 // Module Styles
+
 @import 'header';
+// TODO nav also in bootstrap..how to use bootstrap here
+
 @import 'navigation';
+
 @import 'content';
+
+//TODO add styling using bootstrap mixins
 @import 'comments';
+
+//TODO add styling using bootstrap mixins
 @import 'sidebars';
+
+//TODO add styling using bootstrap mixins
 @import 'footer';
 
+/*
 // Templates
 
 // Print
