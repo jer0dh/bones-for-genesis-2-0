@@ -1,39 +1,65 @@
 .site-header {
+//    min-height: $header_min_height;
+    background-color: $header_bg_color;
 	> .wrap {
       @include make-row;
 	}
 }
 
 .title-area {
-    @include make-md-column($md_col_header_title);
+    @include make-md-column($header_title_col);
 	//float: left;
+}
+
+//if no header sidebar, make title-area full width
+.title-area:only-child {
+  @include make-md-column($grid-columns);
 }
 
 .site-title,
 .site-description {
-	margin: 0;
-	line-height: 1;
+  margin: 0;
+  line-height: 1;
 
-	.header-image & {
-        @include text-hide;
-		//@extend %image-replacement; - replaced by bootstrap mixin
-		display: block;
-	}
+  .header-image & {
+    @include text-hide;
+    //@extend %image-replacement; - replaced by bootstrap mixin
+
+  }
+}
+//TODO Possible - As background image, element will not auto size - option to add <img> ?
+.header-image .site-title > a {
+  background: url(../../images/logo.png) no-repeat left;
+  min-height: $header_image_min_height;
+  width: 100%;
+  display:inline-block;
+  overflow: hidden;
+}
+
+
+.site-title {
+  font-size: $header_title_font_size;
+  color: $header_title_font_color;
+  line-height: 1.2;
+
+  a {
+    &:hover,
+    &:focus,
+    &:active {
+      color: $header_site-title_hover_color;
+    }
+  }
 }
 
 .site-title {
-	line-height: 1;
-
-	a {
-		&:hover,
-		&:focus,
-		&:active {
-		}
-	}
+  font-size: $header_title_font_size;
+  color: $header_title_font_color;
+  margin-bottom: 0;
 }
 
+
 .header-widget-area {
-     @include make-md-column($md_col_header_widget);
+     @include make-md-column($header_widget_col);
 	//float: right;
 
 	.widget {

@@ -144,14 +144,20 @@ $col_content_single_sidebar : $grid-columns - $col_sidebar_secondary - $col_offs
 @debug "$col_content_single_sidebar is " $col_content_single_sidebar;
 
 
-$md_col_header_title: 8;
-$md_col_header_widget: 4;
 
-$siteWidth: 60em; // Useful for fixed width sites, as well as for limiting the max-width of fluid sites
+$siteWidth: 80em; // Useful for fixed width sites, as well as for limiting the max-width of fluid sites
 
 $header_bg: #fff;
 $content_bg: #fff;
 $sidebar_bg: #fff;
 
-
-
+/* # Site Header
+---------------------------------------------------------------------------------------------------- */
+$header_title_col: 8;
+$header_widget_col: 4;
+$header_image_min_height: 91px;
+//$header_min_height: 16em;
+$header_bg_color: #fff;
+$header_title_font_size: 3.6em;
+$header_title_font_color: $gray-darker;
+$header_site-title_hover_color: $gray-darker;

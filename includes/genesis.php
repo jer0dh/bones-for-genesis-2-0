@@ -32,7 +32,7 @@ add_theme_support( 'html5', array( 'comment-list', 'comment-form', 'search-form'
  *
  * @since 2.0.9
  */
-// add_theme_support( 'genesis-custom-header', array( 'width' => 960, 'height' => 100 ) );
+//add_theme_support( 'genesis-custom-header', array( 'width' => 960, 'height' => 100,'header_image'=>'images/logo.png' ));
 
 /**
  * Add Genesis post format support

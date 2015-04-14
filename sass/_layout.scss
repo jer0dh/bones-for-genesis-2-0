@@ -10,8 +10,8 @@
   @include container-fixed();
   padding-left: ($grid-gutter-width / 2) + $page-padding;
   padding-right: ($grid-gutter-width / 2) + $page-padding;
+  max-width: $siteWidth;
 }
-
  .page .site-inner, .single-page-section {
   @include make-row;
 }
