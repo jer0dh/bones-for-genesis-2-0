@@ -1,4 +1,4 @@
-Bones for Genesis 2.0
+Bones for Genesis 2.0 with Bootstrap integration
 ==============
 
 My fork of [cdukes](https://github.com/cdukes/bones-for-genesis-2-0) which is a fork of [eddiemachado's](https://github.com/eddiemachado/bones-genesis) Bones for Genesis. Built for Genesis 2.1+ and WordPress 4.1+.
@@ -24,7 +24,7 @@ Making the front-page.php to load up and display multiple pages as a single web 
 
 Using the Bootstrap SASS mixins to format the sidebar-content, sidebar-content-sidebar, etc
 
-Integrated Bootstrap menus
+Integrated Bootstrap menus to primary navigation
 -in includes\menu.php user can select nav-tabs, nav-pills, or navbar.
 -if navbar, then static-top, fixed-top, fixed-bottom, navbar-left, and/or navbar-right can be chosen
 
