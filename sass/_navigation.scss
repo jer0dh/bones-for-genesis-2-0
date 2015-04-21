@@ -3,6 +3,14 @@ nav {
   @include make-row;
 }
 
+nav.navbar-fixed-top, nav.navbar-fixed-bottom {
+  margin-left: 0;
+  margin-right: 0;
+}
+body.admin-bar.fixed-top nav.navbar-fixed-top{
+  top: 32px;
+}
+
 .genesis-nav-menu {
 	@extend %clearfix;
 	width: 100%;

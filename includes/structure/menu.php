@@ -10,13 +10,14 @@ if( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
  * copy to only add an attribute.  Created a simple jQuery solution in script.js.
  *
  * fixed-top and fixed-bottom require padding-top and padding-bottom, respectively.  This is also
- * added via jQuery in script.js.
+ * added via jQuery in script.js since we can get the computed height of the nav and add the appropriate
+ * padding.
  */
 //Menu variables:
 //An admin interface could be created to change these values on the dashboard
 $bfg_genesis_menu = false;
 $bfg_menu_type = 'navbar'; //Possible values: tab, pill, navbar
-$bfg_navbar_type = 'static-top'; //Possible values: static-top, fixed-top, fixed-bottom
+$bfg_navbar_type = 'fixed-top'; //Possible values: static-top, fixed-top, fixed-bottom
 $bfg_navbar_align = 'right';
 
 
@@ -54,11 +55,14 @@ function bfg_fixed_top_body_class( $classes) {
 function bfg_custom_primary_do_nav() {
 	global $bfg_menu_type, $bfg_navbar_type, $bfg_navbar_align;
 
+	//If menu has not been assigned to Primary Navigation, abort.
+	if ( ! has_nav_menu( 'primary' ) ) {
+		return;
+	}
 	//Default values
 	$container_class = '';
 	$menu_class = 'nav nav-pills';
 	$items_wrap = ' <div class="container-fluid"><ul id="%1$s" class="%2$s">%3$s</ul></div>';
-
 	switch ($bfg_menu_type) {
 		case 'pill':
 			$menu_class = 'nav nav-pills';

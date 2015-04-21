@@ -249,7 +249,7 @@ function bfg_numeric_posts_nav() {
 
 	//* Previous Post Link
 	$class = get_previous_posts_link() ? '' : 'class="disabled"';
-	printf( '<li ' . $class . '>%s</li>' . "\n", get_previous_posts_link( apply_filters( 'genesis_prev_link_text', __( 'Previous Page', 'genesis' ) ) ) );
+	printf( '<li ' . $class . '>%s</li>' . "\n", get_previous_posts_link( apply_filters( 'genesis_prev_link_text', __( 'Previous', 'genesis' ) ) ) );
 
 
 	sort( $links );
@@ -260,7 +260,7 @@ function bfg_numeric_posts_nav() {
 
 	//* Next Post Link
 	$class = get_next_posts_link() ? '' : 'class="disabled"';
-	printf( '<li ' . $class .'>%s</li>' . "\n", get_next_posts_link( apply_filters( 'genesis_next_link_text', __( 'Next Page', 'genesis' ) ) ) );
+	printf( '<li ' . $class .'>%s</li>' . "\n", get_next_posts_link( apply_filters( 'genesis_next_link_text', __( 'Next', 'genesis' ) ) ) );
 
 	if ( ! in_array( $max, $links )) {
 		printf( '<li><a href="%s">%s</a></li>' . "\n", esc_url( get_pagenum_link( $max ) ), '&#x000BB;' );

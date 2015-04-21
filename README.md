@@ -6,7 +6,7 @@ My fork of [cdukes](https://github.com/cdukes/bones-for-genesis-2-0) which is a 
 
 Please see cdukes for great instructions.
 
-#Changes so far:#
+##Changes so far:##
 
 - Removed grunt-contrib-sass (I am using Windows and don't have ruby or Compass installed)
 - Added node-sass ( I do have node.js installed on my machine)
@@ -21,9 +21,22 @@ Please see cdukes for great instructions.
 - Integrated Bootstrap menus to primary navigation
   - in includes\structure\menu.php the user can select nav-tabs, nav-pills, or navbar.
   - if navbar, then static-top, fixed-top, fixed-bottom, navbar-left, and/or navbar-right can be chosen
-- Changing WordPress Genesis Pagination markup to match Bootstrap
+- Changing WordPress Genesis Pagination markup to match Bootstrap's
   - for Numeric pagination it follows `<ul class="pagination">` markup. In the includes\structure\post.php, one can also change the range the pagination nav will show.
   - for Previous/Next pagination it follows the `<ul class="pager">` markup.
+
+
+##Recent Fixes##
+
+- Added to _navigation.scss to move fixed-top nav down if wp admin bar is visible.
+```css
+body.admin-bar.fixed-top nav.navbar-fixed-top{
+  top: 32px;
+}
+```
+- Fixed errors if there was no menu set as Primary Navigation
+- Fixed padding issue on .site-inner for some pages.
+- Fixed padding issue on nav.navbar-fixed-top, nav.navbar-fixed-bottom
 
 
 
