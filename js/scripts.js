@@ -55,4 +55,19 @@ jQuery(function($) {
 	if( typeof grunticon === 'function')
 		grunticon([grunticon_paths.svg, grunticon_paths.png, grunticon_paths.fallback]);
 
+    // Adding role='presentation' to nav tabs and pills bootstrap menus
+    $('ul.nav-tabs').children('li').attr('role','presentation');
+
+    // Add padding to body if navbar fixed is used
+
+    //Get computed padding in px
+    var originalPaddingTop = parseInt( $('body').css('padding-top'));
+    var originalPaddingBottom = parseInt( $('body').css('padding-bottom'));
+
+    // Get computed height of nav container in px
+    var navHeight = $('nav').height();
+
+    $('body.fixed-top').css('padding-top', navHeight + originalPaddingTop + 'px');
+    $('body.fixed-bottom').css('padding-bottom', navHeight + originalPaddingBottom + 'px');
+
 });

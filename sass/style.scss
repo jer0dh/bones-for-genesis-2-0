@@ -5,6 +5,7 @@
 //@import '../bower_components/Colors/sass/variables';
 
 // Variables & Mixins
+@import 'variables-bootstrap';
 @import 'variables';
 @import 'mixins';
 @import 'bootstrap_custom';
@@ -37,8 +38,9 @@
 // Module Styles
 
 @import 'header';
-// TODO nav also in bootstrap..how to use bootstrap here
+// TODO Merging of Genesis and bootstrap navigation or choice to allow either
 
+//TODO if also doing genesis menu - need to alter this with colors and such
 @import 'navigation';
 
 @import 'content';

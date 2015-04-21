@@ -99,6 +99,14 @@ function bfg_load_scripts() {
 	wp_register_script( 'jquery', $src, array(), null, true );
 	add_filter( 'script_loader_src', 'bfg_jquery_local_fallback', 10, 2 );
 
+	//Add Bootstrap.js from CDN
+	$src = $use_production_assets ? '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js' : '/js/bootstrap.js';
+	$stylesheet_dir = get_stylesheet_directory_uri();
+	wp_enqueue_script('bootstrap',$stylesheet_dir . $src,array( 'jquery' ),'3.3.4',true);
+//	add_filter( 'script_loader_src', 'bfg_bootstrap_local_fallback', 10, 2 );
+       //note: For the fallback to be added, one more wp_enqueue_script needs to be called
+	   // which we do below
+
 	// Main script file (in footer)
 	$src = $use_production_assets ? '/build/js/scripts.min.js' : '/build/js/scripts.js';
 	$stylesheet_dir = get_stylesheet_directory_uri();
@@ -167,7 +175,7 @@ function bfg_ie_script_conditionals( $tag, $handle, $src ) {
 /**
  * jQuery local fallback, if Google CDN is unreachable
  *
- * See: https://github.com/roots/roots/blob/aa59cede7fbe2b853af9cf04e52865902d2ff1a9/lib/scripts.php#L37-L52
+ * Altered to add fallback for bootstrap as well - making sure jquery is before bootstrap.js
  *
  * @since 2.0.20
  */
@@ -177,7 +185,7 @@ function bfg_jquery_local_fallback( $src, $handle = null ) {
 	static $add_jquery_fallback = false;
 
 	if( $add_jquery_fallback ) {
-		echo '<script>window.jQuery || document.write(\'<script src="' . includes_url() . 'js/jquery/jquery.js"><\/script>\')</script>' . "\n";
+		echo '<script>window.jQuery || document.write(\'<script src="' . get_stylesheet_directory_uri() . '/js/jquery/jquery.min.js"><\/script>\')</script>' . "\n";
 		$add_jquery_fallback = false;
 	}
 
@@ -187,6 +195,21 @@ function bfg_jquery_local_fallback( $src, $handle = null ) {
 
 	return $src;
 
+}
+
+add_filter( 'script_loader_tag', 'bfg_fallback_script_conditionals', 11, 3 );
+function bfg_fallback_script_conditionals( $tag, $handle, $src ) {
+    if( 'bootstrap' === $handle ) {
+		//Append a fallback to a local copy of bootstrap if CDN not available
+		$fallback_src = get_stylesheet_directory_uri() . '/js/bootstrap.min.js';
+        $output = $tag;
+		$output .= "\n".'<script>jQuery.fn.modal || document.write(\'<script src="';
+		$output .= $fallback_src . '"><\/script>\');</script>';
+	} else {
+		$output = $tag;
+	}
+
+	return $output;
 }
 
 // add_filter( 'genesis_pre_load_favicon', 'bfg_pre_load_favicon' );

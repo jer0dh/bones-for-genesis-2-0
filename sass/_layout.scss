@@ -5,6 +5,9 @@
 // .content-sidebar
 // .sidebar-content
 // .full-width-content
+body.fixed-top {
+
+}
 
 .site-container {
   @include container-fixed();
