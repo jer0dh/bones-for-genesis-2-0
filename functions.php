@@ -36,7 +36,3 @@ require_once( CHILD_DIR . '/includes/structure/sidebar.php' );
 
 // Shame
 require_once( CHILD_DIR . '/includes/shame.php' );					// For new code snippets that haven't been sorted and commented yet
-
-/*add_action('genesis_after_header', 'br_site_layout',10,0);
-remove_action('genesis_after_content', 'genesis_get_sidebar');
-remove_action('genesis_after_content_sidebar_wrap', 'genesis_get_sidebar_alt');*/

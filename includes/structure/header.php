@@ -103,9 +103,6 @@ function bfg_load_scripts() {
 	$src = $use_production_assets ? '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js' : '/js/bootstrap.js';
 	$stylesheet_dir = get_stylesheet_directory_uri();
 	wp_enqueue_script('bootstrap',$stylesheet_dir . $src,array( 'jquery' ),'3.3.4',true);
-//	add_filter( 'script_loader_src', 'bfg_bootstrap_local_fallback', 10, 2 );
-       //note: For the fallback to be added, one more wp_enqueue_script needs to be called
-	   // which we do below
 
 	// Main script file (in footer)
 	$src = $use_production_assets ? '/build/js/scripts.min.js' : '/build/js/scripts.js';
