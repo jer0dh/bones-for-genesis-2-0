@@ -19,8 +19,11 @@ Please see cdukes for great instructions.
 - Creating SASS variables so user can alter the number of grids, width of content and sidebars, and width of offset.
 - Bootstrap.js is enqueued with it's CDN path.  A fallback to a local bootstrap.js file is also added if CDN not available.
 - Integrated Bootstrap menus to primary navigation
-  - in includes\menu.php the user can select nav-tabs, nav-pills, or navbar.
+  - in includes\structure\menu.php the user can select nav-tabs, nav-pills, or navbar.
   - if navbar, then static-top, fixed-top, fixed-bottom, navbar-left, and/or navbar-right can be chosen
+- Changing WordPress Genesis Pagination markup to match Bootstrap
+  - for Numeric pagination it follows `<ul class="pagination">` markup. In the includes\structure\post.php, one can also change the range the pagination nav will show.
+  - for Previous/Next pagination it follows the `<ul class="pager">` markup.
 
 
 

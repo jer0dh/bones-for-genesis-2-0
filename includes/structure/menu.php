@@ -16,7 +16,7 @@ if( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 //An admin interface could be created to change these values on the dashboard
 $bfg_genesis_menu = false;
 $bfg_menu_type = 'navbar'; //Possible values: tab, pill, navbar
-$bfg_navbar_type = 'fixed-top'; //Possible values: static-top, fixed-top, fixed-bottom
+$bfg_navbar_type = 'static-top'; //Possible values: static-top, fixed-top, fixed-bottom
 $bfg_navbar_align = 'right';
 
 

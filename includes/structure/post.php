@@ -146,3 +146,130 @@ function bfg_password_form( $post = 0 ) {
 	return $output;
 
 }
+
+
+// Pagination formatted as Bootstrap expects
+
+remove_action( 'genesis_after_endwhile', 'genesis_posts_nav' );
+add_action('genesis_after_endwhile', 'bfg_posts_nav');
+
+/**
+ * Replaces genesis_posts_nav() to direct code to our bootstrap pagination code
+ *
+ * Original code does not contain necessary hooks to alter html markup so we will
+ * overwrite them.
+ *
+ *
+ * @uses genesis_get_option()            Get theme setting value.
+ * @uses bfg_prev_next_posts_nav()   Prev and Next links.
+ * @uses bfg_numeric_posts_nav()     Numbered links.
+ */
+function bfg_posts_nav() {
+
+	if ( 'numeric' === genesis_get_option( 'posts_nav' ) )
+		bfg_numeric_posts_nav();
+	else
+		bfg_prev_next_posts_nav();
+
+}
+
+function bfg_prev_next_posts_nav() {
+
+	$prev_link = get_previous_posts_link( apply_filters( 'genesis_prev_link_text', '&#x000AB;' . __( 'Previous Page', 'genesis' ) ) );
+	$next_link = get_next_posts_link( apply_filters( 'genesis_next_link_text', __( 'Next Page', 'genesis' ) . '&#x000BB;' ) );
+
+	$prev = $prev_link ? '<li class="previous">' . $prev_link . '</li>' : '';
+	$next = $next_link ? '<li class="next">' . $next_link . '</li>' : '';
+
+	$nav = genesis_markup( array(
+		'html5'   => '<nav>',
+		'xhtml'   => '<div class="navigation">',
+	//	'context' => 'archive-pagination',
+		'echo'    => false,
+	) );
+    $nav .= '<div class="container-fluid"><ul class="pager">';
+	$nav .= $prev;
+	$nav .= $next;
+	$nav .= '</div></ul>';
+	$nav .= genesis_markup( array(
+		'html5' => '</nav>',
+		'xhtml' => '</div>',
+		'echo'  => false
+	) );
+
+	if ( $prev || $next )
+		echo $nav;
+}
+
+function bfg_numeric_posts_nav() {
+    //$range determines how many pages to show on pagination
+	//TODO Possible admin Interface to add this
+	$range = 5;
+
+	if( is_singular() )
+		return;
+
+	global $wp_query;
+
+	//* Stop execution if there's only 1 page
+	if( $wp_query->max_num_pages <= 1 )
+		return;
+
+	$paged = get_query_var( 'paged' ) ? absint( get_query_var( 'paged' ) ) : 1;
+	$max   = intval( $wp_query->max_num_pages );
+	$mid = round($range/2);
+	$midf = floor($range/2);
+	if( $max <= $range ) {
+		$start = 1;
+		$end = $max;
+	} elseif ( $paged > $mid && ($paged+$midf) <= $max) {
+		$start = $paged - $midf;
+		$end = $range % 2 == 0 ? $paged + $midf - 1 : $paged + $midf;
+	}elseif ($paged <= $mid ){
+		$start = 1;
+		$end = $range;
+	} else {
+		$start = $max - $range + 1;
+		$end = $max;
+	}
+    for( $i = $start; $i <= $end ; $i++) {
+	    $links[] = $i;
+    }
+	genesis_markup( array(
+		'html5'   => '<nav>',
+		'xhtml'   => '<div class="navigation">',
+		'context' => '',
+	) );
+
+	echo '<div class="container-fluid"><ul class="pagination">';
+
+	if ( ! in_array( 1, $links )) {
+		printf( '<li><a href="%s">%s</a></li>' . "\n", esc_url( get_pagenum_link( 1 ) ), '&#x000AB;' );
+	}
+
+	//* Previous Post Link
+	$class = get_previous_posts_link() ? '' : 'class="disabled"';
+	printf( '<li ' . $class . '>%s</li>' . "\n", get_previous_posts_link( apply_filters( 'genesis_prev_link_text', __( 'Previous Page', 'genesis' ) ) ) );
+
+
+	sort( $links );
+	foreach ( (array) $links as $link ) {
+		$class = $paged == $link ? ' class="active"' : '';
+		printf( '<li%s><a href="%s">%s</a></li>' . "\n", $class, esc_url( get_pagenum_link( $link ) ), $link );
+	}
+
+	//* Next Post Link
+	$class = get_next_posts_link() ? '' : 'class="disabled"';
+	printf( '<li ' . $class .'>%s</li>' . "\n", get_next_posts_link( apply_filters( 'genesis_next_link_text', __( 'Next Page', 'genesis' ) ) ) );
+
+	if ( ! in_array( $max, $links )) {
+		printf( '<li><a href="%s">%s</a></li>' . "\n", esc_url( get_pagenum_link( $max ) ), '&#x000BB;' );
+	}
+	echo '</ul></div>' . "\n";
+
+	genesis_markup( array(
+		'html5'   => '</nav>',
+		'xhtml'   => '</div>',
+		'context' => '',
+	) );
+}
