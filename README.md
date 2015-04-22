@@ -21,6 +21,8 @@ Please see cdukes for great instructions.
 - Integrated Bootstrap menus to primary navigation
   - in includes\structure\menu.php the user can select nav-tabs, nav-pills, or navbar.
   - if navbar, then static-top, fixed-top, fixed-bottom, navbar-left, and/or navbar-right can be chosen
+  - Added filters so one can add navbar-brand and/or navbar-search
+  - navbar-brand will check height of image in php and set line-heights accordingly to vertically center nav links
 - Changing WordPress Genesis Pagination markup to match Bootstrap's
   - for Numeric pagination it follows `<ul class="pagination">` markup. In the includes\structure\post.php, one can also change the range the pagination nav will show.
   - for Previous/Next pagination it follows the `<ul class="pager">` markup.

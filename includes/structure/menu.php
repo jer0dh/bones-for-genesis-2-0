@@ -34,6 +34,9 @@ if (!$bfg_genesis_menu) {
 	add_filter('nav_menu_link_attributes', 'bfg_link_attributes',10,2);
 	add_filter('nav_menu_css_class', 'bfg_add_dropdown_active',10,4);
 
+	add_filter('bfg_navbar_content', 'bfg_navbar_brand');
+	add_filter('bfg_navbar_content', 'bfg_navbar_search_form');
+
 	if ( $bfg_navbar_type === 'fixed-bottom' ) {
 		add_filter( 'body_class', 'bfg_fixed_bottom_body_class' );
 	}
@@ -75,7 +78,9 @@ function bfg_custom_primary_do_nav() {
 		case 'navbar':
 			$container_class = 'navbar navbar-default navbar-' . sanitize_text_field($bfg_navbar_type);
 			$menu_class = 'nav navbar-nav navbar-' . sanitize_text_field($bfg_navbar_align);
-			$items_wrap = '<div class="container-fluid"><div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> </div> <div class="collapse navbar-collapse" id="navbar-collapse-1"><ul id="%1$s" class="%2$s">%3$s</ul></div></div>';
+			$navbar_content = '';
+			$items_wrap = '<div class="container-fluid"><div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> </div> <div class="collapse navbar-collapse" id="navbar-collapse-1">';
+			$items_wrap .= apply_filters('bfg_navbar_content', $navbar_content) . '<ul id="%1$s" class="%2$s">%3$s</ul></div></div>';
 			break;
 	}
 	    wp_nav_menu( array(
@@ -118,4 +123,31 @@ function bfg_add_dropdown_active($classes, $item, $args, $depth) {
 		$classes[] = 'active';
 	}
 	return $classes;
+}
+
+function bfg_navbar_search_form($navbar_content) {
+	$url = get_home_url();
+
+	$navbar_content .= '<form method="get" class="navbar-form navbar-left" action="' .  $url . '" role="search">';
+	$navbar_content .= '<div class="form-group">';
+	$navbar_content .= '<input class="form-control" name="s" placeholder="Search" type="text">';
+	$navbar_content .= '</div>';
+	$navbar_content .= '<button class="btn btn-default" value="Search" type="submit">Submit</button>';
+	$navbar_content .= '</form>';
+
+	return $navbar_content;
+}
+
+function bfg_navbar_brand($navbar_content) {
+	//TODO admin interface to add image, brand, url to options
+	$image = get_stylesheet_directory_uri() . '/images/logo.png';
+	list($width, $height, $type, $attr) = getimagesize($image);
+	$url = get_home_url();
+    $brand = get_bloginfo('name');
+	$navbar_content .= '<a class="navbar-brand" href="' . $url . '">';
+	$navbar_content .= '   <img alt="' . $brand . '" src = "' . $image .'"> </a>';
+	$navbar_content .= '<style> .navbar-nav li a { line-height: ' . $height . 'px;}';
+	$navbar_content .= '.navbar-form { line-height: ' . $height . 'px;}</style>';
+
+	return $navbar_content;
 }
