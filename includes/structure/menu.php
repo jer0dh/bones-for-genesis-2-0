@@ -2,6 +2,35 @@
 
 if( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+/** Breadcrumbs */
+//* Reposition the breadcrumbs
+remove_action( 'genesis_before_loop', 'genesis_do_breadcrumbs' );
+add_action( 'genesis_after_header', 'genesis_do_breadcrumbs' );
+
+//Changing breadcrumbs to Bootstrap's format
+add_filter('genesis_breadcrumb_args', 'bfg_breadcrumb_args');
+function bfg_breadcrumb_args($args){
+	//create a separator of 5 spaces.  This won't be seen in rendered HTML
+	//and allows me to search inside of a crumb when code adds two crumbs together
+	//such as a single post where title is also added to category
+	$args['sep'] = '     ';
+	$args['prefix'] = sprintf( '<ol %s>', genesis_attr( 'breadcrumb' ) );
+    $args['suffix'] = '</ol>';
+	return $args;
+}
+add_filter('genesis_build_crumbs', 'bfg_build_crumbs',10,2 );
+function bfg_build_crumbs($crumbs){
+
+	foreach($crumbs as &$crumb){
+		//Finds a double crumb and replaced separator with <li> tags
+		$crumb = str_replace('     ','</li><li class="active">', $crumb);
+        //If no anchor tag, then end of breadcrumb so add class of active
+		$class = strpos($crumb, '</a>') ? '' : 'class="active"';
+		$crumb = '<li ' . $class .'>' . $crumb . '</li>';
+	}
+	return $crumbs;
+}
+
 /** Integrating Bootstrap NAVs
  *
  * Tab and Pill navs require role='presentation' as an attribute to the <li> of a menu item
@@ -17,7 +46,7 @@ if( !defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 //An admin interface could be created to change these values on the dashboard
 $bfg_genesis_menu = false;
 $bfg_menu_type = 'navbar'; //Possible values: tab, pill, navbar
-$bfg_navbar_type = 'fixed-top'; //Possible values: static-top, fixed-top, fixed-bottom
+$bfg_navbar_type = 'static-top'; //Possible values: static-top, fixed-top, fixed-bottom
 $bfg_navbar_align = 'right';
 
 
@@ -34,7 +63,7 @@ if (!$bfg_genesis_menu) {
 	add_filter('nav_menu_link_attributes', 'bfg_link_attributes',10,2);
 	add_filter('nav_menu_css_class', 'bfg_add_dropdown_active',10,4);
 
-	add_filter('bfg_navbar_content', 'bfg_navbar_brand');
+//	add_filter('bfg_navbar_content', 'bfg_navbar_brand');
 	add_filter('bfg_navbar_content', 'bfg_navbar_search_form');
 
 	if ( $bfg_navbar_type === 'fixed-bottom' ) {
@@ -54,7 +83,7 @@ function bfg_fixed_top_body_class( $classes) {
 	return $classes;
 }
 
-/** Create primary nav using bootstrap.  If bfg_genesis_menu, then call genesis_do_nav  */
+/** Create primary nav using bootstrap.   */
 function bfg_custom_primary_do_nav() {
 	global $bfg_menu_type, $bfg_navbar_type, $bfg_navbar_align;
 

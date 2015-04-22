@@ -26,6 +26,7 @@ Please see cdukes for great instructions.
 - Changing WordPress Genesis Pagination markup to match Bootstrap's
   - for Numeric pagination it follows `<ul class="pagination">` markup. In the includes\structure\post.php, one can also change the range the pagination nav will show.
   - for Previous/Next pagination it follows the `<ul class="pager">` markup.
+-Changing Breadcrumbs to match Bootstrap's markup
 
 
 ##Recent Fixes##
