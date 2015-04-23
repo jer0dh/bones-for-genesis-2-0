@@ -63,7 +63,7 @@ if (!$bfg_genesis_menu) {
 	add_filter('nav_menu_link_attributes', 'bfg_link_attributes',10,2);
 	add_filter('nav_menu_css_class', 'bfg_add_dropdown_active',10,4);
 
-//	add_filter('bfg_navbar_content', 'bfg_navbar_brand');
+	add_filter('bfg_navbar_brand_content', 'bfg_navbar_brand');
 	add_filter('bfg_navbar_content', 'bfg_navbar_search_form');
 
 	if ( $bfg_navbar_type === 'fixed-bottom' ) {
@@ -108,7 +108,8 @@ function bfg_custom_primary_do_nav() {
 			$container_class = 'navbar navbar-default navbar-' . sanitize_text_field($bfg_navbar_type);
 			$menu_class = 'nav navbar-nav navbar-' . sanitize_text_field($bfg_navbar_align);
 			$navbar_content = '';
-			$items_wrap = '<div class="container-fluid"><div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> </div> <div class="collapse navbar-collapse" id="navbar-collapse-1">';
+			$items_wrap = '<div class="container-fluid"><div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> ';
+			$items_wrap .= apply_filters('bfg_navbar_brand_content',$navbar_content) . '</div> <div class="collapse navbar-collapse" id="navbar-collapse-1">';
 			$items_wrap .= apply_filters('bfg_navbar_content', $navbar_content) . '<ul id="%1$s" class="%2$s">%3$s</ul></div></div>';
 			break;
 	}
@@ -153,7 +154,8 @@ function bfg_add_dropdown_active($classes, $item, $args, $depth) {
 	}
 	return $classes;
 }
-
+//TODO search submit button is slightly off if navbar-brand
+//TODO need media query to change line-height when responsive menu is active
 function bfg_navbar_search_form($navbar_content) {
 	$url = get_home_url();
 
@@ -171,12 +173,16 @@ function bfg_navbar_brand($navbar_content) {
 	//TODO admin interface to add image, brand, url to options
 	$image = get_stylesheet_directory_uri() . '/images/logo.png';
 	list($width, $height, $type, $attr) = getimagesize($image);
+
 	$url = get_home_url();
     $brand = get_bloginfo('name');
 	$navbar_content .= '<a class="navbar-brand" href="' . $url . '">';
 	$navbar_content .= '   <img alt="' . $brand . '" src = "' . $image .'"> </a>';
-	$navbar_content .= '<style> .navbar-nav li a { line-height: ' . $height . 'px;}';
-	$navbar_content .= '.navbar-form { line-height: ' . $height . 'px;}</style>';
+
+	if ($height > 50) {
+		$navbar_content .= '<style> .navbar-nav li a, .navbar-form { line-height: ' . $height . 'px;}';
+		$navbar_content .= '.navbar-brand {height: inherit;}</style>';
+	}
 
 	return $navbar_content;
 }

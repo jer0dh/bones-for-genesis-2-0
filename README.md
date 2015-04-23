@@ -40,6 +40,7 @@ body.admin-bar.fixed-top nav.navbar-fixed-top{
 - Fixed errors if there was no menu set as Primary Navigation
 - Fixed padding issue on .site-inner for some pages.
 - Fixed padding issue on nav.navbar-fixed-top, nav.navbar-fixed-bottom
-
+- Fixed nav-brand position in navbar
+- Fixed nav-brand height issue and navbar anchor heights on mobile view
 
 

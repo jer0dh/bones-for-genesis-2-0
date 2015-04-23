@@ -10,6 +10,14 @@ nav.navbar-fixed-top, nav.navbar-fixed-bottom {
 body.admin-bar.fixed-top nav.navbar-fixed-top{
   top: 32px;
 }
+// if nav-brand image height is > 50px, when collapsed, menu items need line-height
+// back to normal.  Had to override inline styles with !important.
+@media (max-width: $grid-float-breakpoint - 1) {
+  .navbar-nav li a, .navbar-form {
+    line-height: $line-height-computed !important;
+  }
+}
+
 
 .genesis-nav-menu {
 	@extend %clearfix;
