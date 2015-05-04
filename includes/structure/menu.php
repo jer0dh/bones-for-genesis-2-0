@@ -46,7 +46,7 @@ function bfg_build_crumbs($crumbs){
 //An admin interface could be created to change these values on the dashboard
 $bfg_genesis_menu = false;
 $bfg_menu_type = 'navbar'; //Possible values: tab, pill, navbar
-$bfg_navbar_type = 'static-top'; //Possible values: static-top, fixed-top, fixed-bottom
+$bfg_navbar_type = 'fixed-top'; //Possible values: static-top, fixed-top, fixed-bottom
 $bfg_navbar_align = 'right';
 
 
@@ -56,15 +56,21 @@ $bfg_navbar_align = 'right';
 if (!$bfg_genesis_menu) {
 
 	//Use different hook if nav needs to be elsewhere
+	remove_action( 'genesis_header', 'genesis_do_header' );
 	remove_action( 'genesis_after_header', 'genesis_do_nav' );
-	add_action( 'genesis_after_header', 'bfg_custom_primary_do_nav', 5 );
+	add_action( 'genesis_header', 'bfg_custom_primary_do_nav', 5 );
+	add_filter('genesis_structural_wrap-header', 'bfg_no_wrap');
 
+	//If put in custom menu
+	//add_filter('widget_nav_menu_args','bfg_custom_primary_do_nav');
+
+//TODO Extend custom_menu widget to determine if bootstrap nav wanted and which type
 
 	add_filter('nav_menu_link_attributes', 'bfg_link_attributes',10,2);
 	add_filter('nav_menu_css_class', 'bfg_add_dropdown_active',10,4);
 
 	add_filter('bfg_navbar_brand_content', 'bfg_navbar_brand');
-	add_filter('bfg_navbar_content', 'bfg_navbar_search_form');
+//	add_filter('bfg_navbar_content', 'bfg_navbar_search_form');
 
 	if ( $bfg_navbar_type === 'fixed-bottom' ) {
 		add_filter( 'body_class', 'bfg_fixed_bottom_body_class' );
@@ -84,8 +90,17 @@ function bfg_fixed_top_body_class( $classes) {
 }
 
 /** Create primary nav using bootstrap.   */
-function bfg_custom_primary_do_nav() {
+function bfg_custom_primary_do_nav($nav_menu_args) {
 	global $bfg_menu_type, $bfg_navbar_type, $bfg_navbar_align;
+	//If this function called as a filter for custom widget
+	$filter = false;
+	if ( ! empty( $nav_menu_args['menu'] ) ) {
+		$filter = true;
+/*
+		if ( $nav_menu_args['menu'] !== 'primary' ) { //not for bootstrap
+			return $nav_menu_args;
+		}*/
+	}
 
 	//If menu has not been assigned to Primary Navigation, abort.
 	if ( ! has_nav_menu( 'primary' ) ) {
@@ -93,9 +108,9 @@ function bfg_custom_primary_do_nav() {
 	}
 	//Default values
 	$container_class = '';
-	$menu_class = 'nav nav-pills';
-	$items_wrap = ' <div class="container-fluid"><ul id="%1$s" class="%2$s">%3$s</ul></div>';
-	switch ($bfg_menu_type) {
+	$menu_class      = 'nav nav-pills';
+	$items_wrap      = ' <div class="container-fluid"><ul id="%1$s" class="%2$s">%3$s</ul></div>';
+	switch ( $bfg_menu_type ) {
 		case 'pill':
 			$menu_class = 'nav nav-pills';
 			$items_wrap = ' <div class="container-fluid"><ul id="%1$s" class="%2$s">%3$s</ul></div>';
@@ -105,23 +120,36 @@ function bfg_custom_primary_do_nav() {
 			$items_wrap = ' <div class="container-fluid"><ul id="%1$s" class="%2$s">%3$s</ul></div>';
 			break;
 		case 'navbar':
-			$container_class = 'navbar navbar-default navbar-' . sanitize_text_field($bfg_navbar_type);
-			$menu_class = 'nav navbar-nav navbar-' . sanitize_text_field($bfg_navbar_align);
-			$navbar_content = '';
-			$items_wrap = '<div class="container-fluid"><div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> ';
-			$items_wrap .= apply_filters('bfg_navbar_brand_content',$navbar_content) . '</div> <div class="collapse navbar-collapse" id="navbar-collapse-1">';
-			$items_wrap .= apply_filters('bfg_navbar_content', $navbar_content) . '<ul id="%1$s" class="%2$s">%3$s</ul></div></div>';
+			$container_class = 'navbar navbar-default navbar-' . sanitize_text_field( $bfg_navbar_type );
+			$menu_class      = 'nav navbar-nav navbar-' . sanitize_text_field( $bfg_navbar_align );
+			$navbar_content  = '';
+			$items_wrap      = '<div class="container-fluid"><div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> ';
+			$items_wrap .= apply_filters( 'bfg_navbar_brand_content', $navbar_content ) . '</div> <div class="collapse navbar-collapse" id="navbar-collapse-1">';
+			$items_wrap .= apply_filters( 'bfg_navbar_content', $navbar_content ) . '<ul id="%1$s" class="%2$s">%3$s</ul></div></div>';
 			break;
 	}
-	    wp_nav_menu( array(
-		    'container'       => 'nav',
-		    'container_class' => $container_class,
-		    'menu_class'      => $menu_class,
-		    'items_wrap'      => $items_wrap,
-		    'walker'          => new bfg_Walker_Nav_Menu(),
-		    'theme_location'  => 'primary'
-	    ) );
-    }
+	if ( ! $filter ) {
+		wp_nav_menu( array(
+			'container'       => 'nav',
+			'container_class' => $container_class,
+			'menu_class'      => $menu_class,
+			'items_wrap'      => $items_wrap,
+			'walker'          => new bfg_Walker_Nav_Menu(),
+			'theme_location'  => 'primary'
+		) );
+	} else {
+		return array(
+			'menu'            => $nav_menu_args['menu'],
+			'fallback_cb'     => $nav_menu_args['fallback_cb'],
+			'container'       => 'nav',
+			'container_class' => $container_class,
+			'menu_class'      => $menu_class,
+			'items_wrap'      => $items_wrap,
+			'walker'          => new bfg_Walker_Nav_Menu(),
+			'theme_location'  => 'primary'
+		);
+	}
+}
 
 /** Extends the Walker_Nav_menu and overrides the start_lvl function to add class to sub-menu */
 class bfg_Walker_Nav_Menu extends Walker_Nav_Menu {
@@ -185,4 +213,8 @@ function bfg_navbar_brand($navbar_content) {
 	}
 
 	return $navbar_content;
+}
+
+function bfg_no_wrap($arg) {
+	return '';
 }

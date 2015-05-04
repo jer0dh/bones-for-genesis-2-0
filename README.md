@@ -31,6 +31,8 @@ Please see cdukes for great instructions.
 
 ##Recent Fixes##
 
+- Testing nav in header.. Determined may need to extend custom_menu widget.
+- Testing navbar as header with brand.  Works.
 - Added to _navigation.scss to move fixed-top nav down if wp admin bar is visible.
 ```css
 body.admin-bar.fixed-top nav.navbar-fixed-top{
