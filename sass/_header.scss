@@ -9,13 +9,20 @@
 .title-area {
     @include make-md-column($header_title_col);
 	//float: left;
+    z-index: 0;     // below toggle button
 }
+
+.navbar-toggle { z-index: 10;} //above title-area so it's clickable.
 
 //if no header sidebar, make title-area full width
 .title-area:only-child {
   @include make-md-column($grid-columns);
 }
 
+//If navbar is header, title area should not have defined width
+.navbar-header .title-area {
+  width: auto;
+}
 .site-title,
 .site-description {
   margin: 0;
@@ -25,17 +32,26 @@
     @include text-hide;
     //@extend %image-replacement; - replaced by bootstrap mixin
 
+    & > a {
+      background: url(../../images/logo.png) no-repeat left;
+      min-height: $header_image_min_height;
+      width: 100%;
+      display:inline-block;
+      overflow: hidden;
+    }
+
   }
+
 }
 
 .header-image .site-title > a {
-  background: url(../../images/logo.png) no-repeat left;
-  min-height: $header_image_min_height;
-  width: 100%;
-  display:inline-block;
-  overflow: hidden;
+
 }
 
+.header-image .navbar-header .site-title > a {
+  background: none;
+  min-height: 0;
+}
 
 .site-title {
   font-size: $header_title_font_size;

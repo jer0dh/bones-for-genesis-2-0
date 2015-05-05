@@ -33,6 +33,7 @@ require_once( CHILD_DIR . '/includes/structure/menu.php' );
 require_once( CHILD_DIR . '/includes/structure/post.php' );
 require_once( CHILD_DIR . '/includes/structure/search.php' );
 require_once( CHILD_DIR . '/includes/structure/sidebar.php' );
+require_once( CHILD_DIR . '/includes/widgets/widgets.php' );
 
 // Shame
 require_once( CHILD_DIR . '/includes/shame.php' );					// For new code snippets that haven't been sorted and commented yet
@@ -40,4 +41,4 @@ require_once( CHILD_DIR . '/includes/shame.php' );					// For new code snippets 
 //Possible To do's
 //TODO Integrate Media object css from bootstrap for comments
 //TODO Integrate thumbnail css from bootstrap for galleries
-//TODO Integrate breadcrumbs css from bootstrap for genesis breadcrumbs
+

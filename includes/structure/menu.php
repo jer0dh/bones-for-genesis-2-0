@@ -46,38 +46,68 @@ function bfg_build_crumbs($crumbs){
 //An admin interface could be created to change these values on the dashboard
 $bfg_genesis_menu = false;
 $bfg_menu_type = 'navbar'; //Possible values: tab, pill, navbar
-$bfg_navbar_type = 'fixed-top'; //Possible values: static-top, fixed-top, fixed-bottom
+$bfg_navbar_type = 'static-top'; //Possible values: static-top, fixed-top, fixed-bottom
 $bfg_navbar_align = 'right';
 
 
-// remove_action( 'genesis_after_header', 'genesis_do_subnav' );
+//
 
 
 if (!$bfg_genesis_menu) {
 
-	//Use different hook if nav needs to be elsewhere
-	remove_action( 'genesis_header', 'genesis_do_header' );
+	//Take over nav
 	remove_action( 'genesis_after_header', 'genesis_do_nav' );
-	add_action( 'genesis_header', 'bfg_custom_primary_do_nav', 5 );
-	add_filter('genesis_structural_wrap-header', 'bfg_no_wrap');
+	remove_action( 'genesis_after_header', 'genesis_do_subnav' );
+	//TODO test adding subnav
 
-	//If put in custom menu
-	//add_filter('widget_nav_menu_args','bfg_custom_primary_do_nav');
-
-//TODO Extend custom_menu widget to determine if bootstrap nav wanted and which type
-
+	//Needed for all Bootstrap menus
 	add_filter('nav_menu_link_attributes', 'bfg_link_attributes',10,2);
 	add_filter('nav_menu_css_class', 'bfg_add_dropdown_active',10,4);
-
-	add_filter('bfg_navbar_brand_content', 'bfg_navbar_brand');
-//	add_filter('bfg_navbar_content', 'bfg_navbar_search_form');
-
 	if ( $bfg_navbar_type === 'fixed-bottom' ) {
 		add_filter( 'body_class', 'bfg_fixed_bottom_body_class' );
 	}
 	if ( $bfg_navbar_type === 'fixed-top' ) {
 		add_filter( 'body_class', 'bfg_fixed_top_body_class' );
 	}
+//TODO add a admin user interface for these options.
+	//************Uncomment a single section to alter location of Primary Nav - Primary 1 thru 5
+
+	//Primary 1***********Uncomment the following for Bootstrap primary nav replacing header*****************
+	//Genesis | Theme Settings | Header settings determines if nav_brand is shown or site_title is shown
+	// "Image Logo" will show nav_brand and site_title will be there but hidden
+/*	remove_action( 'genesis_header', 'genesis_do_header' );  //remove genesis header
+	add_action( 'genesis_header', 'bfg_custom_primary_do_nav', 5 );
+	add_filter('genesis_structural_wrap-header', 'bfg_no_wrap');  //remove structural wrap
+	add_filter('bfg_navbar_brand_content', 'bfg_navbar_brand_header'); //add brand*/
+
+
+	//Primary 2*********Uncomment the following for Bootstrap primary nav after Genesis Header****************
+	add_action( 'genesis_after_header', 'bfg_custom_primary_do_nav', 5 );
+
+	//Primary 3*********Uncomment the following for Bootstrap primary nav before footer**********************
+/*	add_action( 'genesis_before_footer', 'bfg_custom_primary_do_nav'); */
+
+	//Primary 4*********Uncomment the following for Bootstrap primary nav as footer**********************
+/*	remove_action('genesis_footer','genesis_do_footer');
+	add_action( 'genesis_footer', 'bfg_custom_primary_do_nav');
+	add_filter('genesis_structural_wrap-footer', 'bfg_no_wrap');  //remove structural wrap
+	add_filter('bfg_navbar_brand_content', 'bfg_navbar_brand'); //add brand*/
+
+	//Primary 5*********Uncomment the following for Bootstrap primary nav after Genesis Header****************
+/*		add_action( 'genesis_after_footer', 'bfg_custom_primary_do_nav' );*/
+
+
+
+	//If put in custom menu
+	//add_filter('widget_nav_menu_args','bfg_custom_primary_do_nav');
+
+//TODO Extend custom_menu widget to determine if bootstrap nav wanted and which type
+
+
+// Uncomment out if you want a search bar in the navbar
+//	add_filter('bfg_navbar_content', 'bfg_navbar_search_form');
+
+
 }
 
 function bfg_fixed_bottom_body_class( $classes) {
@@ -90,17 +120,8 @@ function bfg_fixed_top_body_class( $classes) {
 }
 
 /** Create primary nav using bootstrap.   */
-function bfg_custom_primary_do_nav($nav_menu_args) {
+function bfg_custom_primary_do_nav() {
 	global $bfg_menu_type, $bfg_navbar_type, $bfg_navbar_align;
-	//If this function called as a filter for custom widget
-	$filter = false;
-	if ( ! empty( $nav_menu_args['menu'] ) ) {
-		$filter = true;
-/*
-		if ( $nav_menu_args['menu'] !== 'primary' ) { //not for bootstrap
-			return $nav_menu_args;
-		}*/
-	}
 
 	//If menu has not been assigned to Primary Navigation, abort.
 	if ( ! has_nav_menu( 'primary' ) ) {
@@ -128,7 +149,7 @@ function bfg_custom_primary_do_nav($nav_menu_args) {
 			$items_wrap .= apply_filters( 'bfg_navbar_content', $navbar_content ) . '<ul id="%1$s" class="%2$s">%3$s</ul></div></div>';
 			break;
 	}
-	if ( ! $filter ) {
+
 		wp_nav_menu( array(
 			'container'       => 'nav',
 			'container_class' => $container_class,
@@ -137,18 +158,7 @@ function bfg_custom_primary_do_nav($nav_menu_args) {
 			'walker'          => new bfg_Walker_Nav_Menu(),
 			'theme_location'  => 'primary'
 		) );
-	} else {
-		return array(
-			'menu'            => $nav_menu_args['menu'],
-			'fallback_cb'     => $nav_menu_args['fallback_cb'],
-			'container'       => 'nav',
-			'container_class' => $container_class,
-			'menu_class'      => $menu_class,
-			'items_wrap'      => $items_wrap,
-			'walker'          => new bfg_Walker_Nav_Menu(),
-			'theme_location'  => 'primary'
-		);
-	}
+
 }
 
 /** Extends the Walker_Nav_menu and overrides the start_lvl function to add class to sub-menu */
@@ -182,7 +192,7 @@ function bfg_add_dropdown_active($classes, $item, $args, $depth) {
 	}
 	return $classes;
 }
-//TODO search submit button is slightly off if navbar-brand
+//TODO search submit button is slightly off of navbar-brand
 //TODO need media query to change line-height when responsive menu is active
 function bfg_navbar_search_form($navbar_content) {
 	$url = get_home_url();
@@ -210,6 +220,35 @@ function bfg_navbar_brand($navbar_content) {
 	if ($height > 50) {
 		$navbar_content .= '<style> .navbar-nav li a, .navbar-form { line-height: ' . $height . 'px;}';
 		$navbar_content .= '.navbar-brand {height: inherit;}</style>';
+	}
+
+	return $navbar_content;
+}
+function bfg_navbar_brand_header($navbar_content) {
+	//TODO admin interface to add image, brand, url to options
+
+	ob_start();
+	do_action('genesis_site_title');
+	$site_title = ob_get_contents();
+	ob_end_clean();
+	ob_start();
+	do_action('genesis_site_description');
+	$site_description = ob_get_contents();
+	ob_end_clean();
+
+	$image = get_stylesheet_directory_uri() . '/images/logo.png';
+	list($width, $height, $type, $attr) = getimagesize($image);
+
+	$url = get_home_url();
+	$brand = get_bloginfo('name');
+	$navbar_content .= '<div class="title-area"><a class="navbar-brand" href="' . $url . '">';
+
+	$navbar_content .= '   <img alt="' . $brand . '" src = "' . $image .'"/> </a>';
+	$navbar_content .= $site_title . $site_description . "</div>";
+	if ($height > 50) {
+		$navbar_content .= '<style> .header-image .navbar-nav li a, .header-image .navbar-form { line-height: ' . $height . 'px;}';
+		$navbar_content .= '.navbar-brand {display: none;} .header-image .navbar-brand {display: block; height: inherit;}';
+		$navbar_content .= '.</style>';
 	}
 
 	return $navbar_content;

@@ -2,11 +2,18 @@ Bones for Genesis 2.0 with Bootstrap integration
 ==============
 
 My fork of [cdukes](https://github.com/cdukes/bones-for-genesis-2-0) which is a fork of [eddiemachado's](https://github.com/eddiemachado/bones-genesis) Bones for Genesis. Built for Genesis 2.1+ and WordPress 4.1+.
+Added Bootstrap SASS and integrating bootstrap components.
+
+Please see cdukes for great instructions on installing.
+
+##2015-05-05 Changes
+- Version 2.4.0
+- Creating 5 different options for placement of primary navigation.  All options allowing navbar, nav-pills, or nav-tabs
+- Creating a Bootstrap Custom Menu widget.  Adding options to allow navbar, nav-pills, or nav-tabs.  Title of widget also used to create custom filters for further modification.
+- menu.php code cleanup
 
 
-Please see cdukes for great instructions.
-
-##Changes so far:##
+##2015-04-01 Changes so far:##
 
 - Removed grunt-contrib-sass (I am using Windows and don't have ruby or Compass installed)
 - Added node-sass ( I do have node.js installed on my machine)
