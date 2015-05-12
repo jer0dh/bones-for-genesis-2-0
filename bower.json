@@ -16,6 +16,7 @@
     "jquery-placeholder": "*",
     "picturefill": "*",
     "Colors": "mrmrs/colors",
-    "jquery.cookie": "carhartl/jquery-cookie"
+    "jquery.cookie": "carhartl/jquery-cookie",
+    "bootstrap-sass": "~3.3.4"
   }
 }

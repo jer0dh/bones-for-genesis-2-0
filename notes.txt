@@ -1,0 +1,7 @@
+Looking at adding a Panel with a List-Group embeded for the bootstrap custom menu.  Using the ul element as list-group wouldn't highlight the whole <li> on hover.  When trying this it also was padded extra on the left: discovered some css bfg was adding to entry-content li - removd.
+
+Using <div> as the list-group with <a> elements, I got what I wanted except there was extra space between each <a> element.  Determined it was actually WordPress adding <br> between each <a> element.
+
+ Found http://www.simonbattersby.com/blog/plugin-to-stop-wordpress-adding-br-tags/ from Simon Battersby.  Temporarily applied this to functions.php and no more extra space.  Will look at putting this code only in the widget creation...if br is added in a widget.  This was all in the entry-content during testing.
+ 
+ 
