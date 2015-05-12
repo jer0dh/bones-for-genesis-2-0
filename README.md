@@ -6,17 +6,18 @@ Added Bootstrap SASS and integrating bootstrap components.
 
 Please also see cdukes for great instructions on installing.
 
-Here are some instructions if using phpStorm as your development environment, but the basic steps can be gleamed here for other types:
+Here are some instructions if using phpStorm as your development environment, but the basic steps can be gleaned here for other types:
 
 #Installation#
 - Open phpStorm
 - In Quick Start choose "Check out from Version Control" then GitHub
 or if in a project: Tools | VCS | Checkout from Version Control | GitHub
 
->  Git Repository URL: https://github.com/jer0dh/bones-for-genesis-2-0-bootstrap.git
->  Parent Directory: ....\wp-content\themes
->  Theme name: Themename
-
+```
+  Git Repository URL: https://github.com/jer0dh/bones-for-genesis-2-0-bootstrap.git
+  Parent Directory: ....\wp-content\themes
+  Theme name: Themename
+```
 -Open a Terminal in the path of your project from Tools | Run Command and then below the command window, I choose the option Terminal.  Now run the following command
 
 ```
@@ -31,7 +32,7 @@ npm update --save-dev && bower update --save
 
 - Add a logo.png in the images folder if using the header image.
 
-- To deploy, run the grunt build job that will also minify the css and javascript and in WordPress dashboard go to Genesis | Theme settings to check use Production Assets to use the minified versions.
+- To deploy, run the grunt build job that will also minify the css and javascript and in WordPress dashboard go to Genesis | Theme settings to check use Production Assets to use the minified versions.  You should only need the build, fonts, images, includes, js, and svgs directories on your production server, along with any css, php files in the root of this project.
 
 ##2015-05-12 Changes##
 - Fixed that boostrap-sass not added as dependency in bower.json
