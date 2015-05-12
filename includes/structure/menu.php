@@ -62,7 +62,7 @@ if (!$bfg_genesis_menu) {
 
 	//Needed for all Bootstrap menus
 	add_filter('nav_menu_link_attributes', 'bfg_link_attributes',10,2);
-	add_filter('nav_menu_css_class', 'bfg_add_dropdown_active',10,4);
+	add_filter('nav_menu_css_class', 'bfg_add_dropdown_active',10);
 	if ( $bfg_navbar_type === 'fixed-bottom' ) {
 		add_filter( 'body_class', 'bfg_fixed_bottom_body_class' );
 	}
@@ -179,7 +179,7 @@ function bfg_link_attributes($atts,$item) {
 }
 /** adds the necessary classes bootstrap expects for menu items, <li>, with children and current-menu-* items */
 
-function bfg_add_dropdown_active($classes, $item, $args, $depth) {
+function bfg_add_dropdown_active($classes) {
 
 	if(in_array('menu-item-has-children',$classes) ){
 		$classes[] = 'dropdown';

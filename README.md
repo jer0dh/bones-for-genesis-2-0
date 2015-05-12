@@ -5,6 +5,9 @@ My fork of [cdukes](https://github.com/cdukes/bones-for-genesis-2-0) which is a 
 Added Bootstrap SASS and integrating bootstrap components.
 
 Please see cdukes for great instructions on installing.
+#2015-05-11 Changes
+- Adding Glyphicons
+
 
 ##2015-05-05 Changes
 - Version 2.4.0
@@ -53,3 +56,6 @@ body.admin-bar.fixed-top nav.navbar-fixed-top{
 - Fixed nav-brand height issue and navbar anchor heights on mobile view
 
 
+Possible Bugs
+20150512 - Find using W3 Total Cache with JS minified, the fallbacks are not written to the DOM correctly:
+- String for Document.write('...') produces "SyntaxError: unterminated string literal"
