@@ -8,7 +8,7 @@ Please also see cdukes for great instructions on installing.
 
 Here are some instructions if using phpStorm as your development environment, but the basic steps can be gleamed here for other types:
 
-#Instailation#
+#Installation#
 - Open phpStorm
 - In Quick Start choose "Check out from Version Control" then GitHub
 or if in a project: Tools | VCS | Checkout from Version Control | GitHub
