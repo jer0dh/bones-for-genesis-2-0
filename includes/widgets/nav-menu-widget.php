@@ -7,6 +7,7 @@
 class Bootstrap_Custom_Menu_Widget extends WP_Widget {
 
 	private static $menu_types = array('nav-pills', 'nav-tabs', 'navbar-nav');
+	private static $navbar_styles = array('navbar-default', 'navbar-transparent');
 
 	public function __construct() {
 		$widget_ops = array( 'description' => __( 'Add a Bootstrap menu to your sidebar.' ) );
@@ -20,6 +21,7 @@ class Bootstrap_Custom_Menu_Widget extends WP_Widget {
 		if ( ! $nav_menu ) {
 			return;
 		}
+		$widget_id = $this->id;
 		$raw_title = sanitize_title_with_dashes (! empty( $instance['title'] ) ? $instance['title'] : 'no-title') ;
 		/** This filter is documented in wp-includes/default-widgets.php */
 		$instance['title'] = apply_filters( 'widget_title', empty( $instance['title'] ) ? '' : $instance['title'], $instance, $this->id_base );
@@ -50,14 +52,20 @@ class Bootstrap_Custom_Menu_Widget extends WP_Widget {
 				$items_wrap = ' <div class="container-fluid"><ul id="%1$s" class="%2$s">%3$s</ul></div>';
 				break;
 			case 'navbar-nav':
-				$container_class = 'navbar navbar-default navbar-' .  $bfg_navbar_type;
+				$container_class = 'navbar '.$instance['navbar_style'] .' navbar-' .  $bfg_navbar_type;
 				$menu_class      = 'nav navbar-nav navbar-' . sanitize_text_field( $bfg_navbar_align );
 				$navbar_content  = '';
-				$items_wrap      = '<div class="container-fluid"><div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> ';
-				$items_wrap .= apply_filters( 'bfg_navbar_brand_content-'.$raw_title, $navbar_content ) . '</div> <div class="collapse navbar-collapse" id="navbar-collapse-1">';
+				$items_wrap      = '<div class="container-fluid"><div class="navbar-header"> <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-' . $widget_id .'"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button> ';
+				$items_wrap .= apply_filters( 'bfg_navbar_brand_content-'.$raw_title, $navbar_content ) . '</div> <div class="collapse navbar-collapse" id="navbar-' . $widget_id .'">';
 				$items_wrap .= apply_filters( 'bfg_navbar_content-'.$raw_title, $navbar_content ) . '<ul id="%1$s" class="%2$s">%3$s</ul></div></div>';
 				break;
 		}
+		//Check to see if this is a menu in the header.   If so genesis adds filters in genesis_do_header that mess up our markup.
+		if ( has_filter('wp_nav_menu_args', 'genesis_header_menu_args')) {
+			remove_filter('wp_nav_menu_args', 'genesis_header_menu_args');
+			remove_filter('wp_nav_menu', 'genesis_header_menu_wrap');
+		}
+
 		/**
 		 * Filter the arguments for the Bootstrap Nav Menu widget.  Filter name based on widget title
 		 *
@@ -110,12 +118,19 @@ class Bootstrap_Custom_Menu_Widget extends WP_Widget {
 		if ( ! empty( $new_instance['navbar_align'] ) ) {
 			$sanitized_new = sanitize_text_field($new_instance['navbar_align']);
 			if (in_array($sanitized_new,array('left','right')) ) {
-				$instance['navbar_align'] = $new_instance['navbar_align'];
+				$instance['navbar_align'] = $sanitized_new;
 			} else {
 				$instance['navbar_align'] = 'left';
 			}
 		}
-
+		if ( ! empty( $new_instance['navbar_style'] ) ) {
+			$sanitized_new = sanitize_text_field($new_instance['navbar_style']);
+			if (in_array($sanitized_new,self::$navbar_styles) ) {
+				$instance['navbar_style'] = $sanitized_new;
+			} else {
+				$instance['navbar_style'] = self::$navbar_styles[0];
+			}
+		}
 		return $instance;
 	}
 
@@ -124,6 +139,7 @@ class Bootstrap_Custom_Menu_Widget extends WP_Widget {
 		$nav_menu = isset( $instance['nav_menu'] ) ? $instance['nav_menu'] : '';
 		$menu_type = isset( $instance['menu_type'] ) ? $instance['menu_type'] : self::$menu_types[0];
 		$navbar_align = isset( $instance['navbar_align'] ) ? $instance['navbar_align'] : 'left';
+		$navbar_style = isset( $instance['navbar_style'] ) ? $instance['navbar_style'] : self::$navbar_styles[0];
 
 		$instance['show_title'] =  $instance['show_title'] ? true : false;
 // Get menus
@@ -174,7 +190,7 @@ class Bootstrap_Custom_Menu_Widget extends WP_Widget {
 				?>
 				</select>
 		</p>
-		<p class="navAlign" style="display: <?php echo ($menu_type == self::$menu_types[2]) ? 'inline;' : 'none;' ; ?>">
+		<p class="navAlign" style="display: <?php echo ($menu_type == self::$menu_types[2]) ? 'inline-block;' : 'none;' ; ?>">
 			<label for="<?php echo $this->get_field_id( 'navbar_align' ); ?>"><?php _e( 'Select Navbar alignment:' ); ?></label>
 			<select id="<?php echo $this->get_field_id( 'navbar_align' ); ?>"
 			        name="<?php echo $this->get_field_name( 'navbar_align' ); ?>">
@@ -188,19 +204,37 @@ class Bootstrap_Custom_Menu_Widget extends WP_Widget {
 				}
 				?>
 			</select>
+		</p>
+		<p class="navStyle" style="display: <?php echo ($menu_type == self::$menu_types[2]) ? 'inline-block;' : 'none;' ; ?>">
+			<label for="<?php echo $this->get_field_id( 'navbar_style' ); ?>"><?php _e( 'Select Navbar Style:' ); ?></label>
+			<select id="<?php echo $this->get_field_id( 'navbar_style' ); ?>"
+			        name="<?php echo $this->get_field_name( 'navbar_style' ); ?>">
+				<option value="0"><?php _e( '&mdash; Select &mdash;' ) ?></option>
+				<?php
+
+		foreach ( self::$navbar_styles as $style ) {
+			echo '<option value="' . $style . '"'
+			     . selected( $navbar_style, $style, false )
+			     . '>' . esc_html( $style ) . '</option>';
+		}
+		?>
+				</select>
+		</p>
 			<script>function bfg_navbar_change(val) {
 					console.log('bfg_navbar_change: '+ val);
 					if(val == '<?php echo self::$menu_types[2];?>'){
 						jQuery('.navAlign').show();
+						jQuery('.navStyle').show();
 					} else {
 						jQuery('.navAlign').hide();
+						jQuery('.navStyle').hide();
 					}
 
 					//if $menu_type changes.  If = navbar then show() navAlign, else hide()
 				}
 
 			</script>
-		</p>
+
 
 	<?php
 	}

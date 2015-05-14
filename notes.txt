@@ -4,4 +4,7 @@ Using <div> as the list-group with <a> elements, I got what I wanted except ther
 
  Found http://www.simonbattersby.com/blog/plugin-to-stop-wordpress-adding-br-tags/ from Simon Battersby.  Temporarily applied this to functions.php and no more extra space.  Will look at putting this code only in the widget creation...if br is added in a widget.  This was all in the entry-content during testing.
  
- 
+ If want nav-pills to move right, need to add to ul .pull-right
+
+
+

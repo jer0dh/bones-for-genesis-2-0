@@ -150,8 +150,11 @@ $sidebar_bg: #fff;
 
 /* # Site Header
 ---------------------------------------------------------------------------------------------------- */
-$header_title_col: 8;
-$header_widget_col: 4;
+//default size of title_area is 40% of $grid-columns
+$header_title_col: 0.4 * $grid-columns;
+$header_widget_col: 0.6 * $grid-columns;
+//$header_title_col: 4;
+//$header_widget_col: 8;
 $header_image_min_height: 91px;
 //$header_min_height: 16em;
 $header_bg_color: #fff;

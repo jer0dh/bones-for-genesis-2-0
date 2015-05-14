@@ -21,7 +21,7 @@ body.admin-bar.fixed-top nav.navbar-fixed-top{
 
 .genesis-nav-menu {
 	@extend %clearfix;
-	width: 100%;
+//	width: 100%;
 
 	// Applied to all menu <li>s
 	.menu-item {
@@ -74,4 +74,27 @@ body.admin-bar.fixed-top nav.navbar-fixed-top{
 		.sub-menu {
 		}
 	}
+}
+
+//overwrite genesis css if it's a bootstrap nav
+
+// genesis's width of 100% messes up navbar-right.
+.nav.genesis-nav-menu {
+  width: inherit;
+}
+
+// From navbar-default selector in bootstrap.  Used for menus with transparent backgrounds
+// Default navbar
+.navbar-transparent {
+  background-color: transparent;
+  border-color: transparent;
+
+  .navbar-brand {
+    color: $navbar-default-brand-color;
+    &:hover,
+    &:focus {
+      color: $navbar-default-brand-hover-color;
+      background-color: $navbar-default-brand-hover-bg;
+    }
+  }
 }
