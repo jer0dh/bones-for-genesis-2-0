@@ -34,6 +34,11 @@ npm update --save-dev && bower update --save
 
 - To deploy, run the grunt build job that will also minify the css and javascript and in WordPress dashboard go to Genesis | Theme settings to check use Production Assets to use the minified versions.  You should only need the build, fonts, images, includes, js, and svgs directories on your production server, along with any css, php files in the root of this project.
 
+
+##2015-05-22##
+- Version 2.4.3
+- added carousel shortcode
+
 ##2015-05-13##
 - Version 2.4.2
 - changed default values for column size of title_area and header widget as a percentage of $grid-columns;
@@ -41,8 +46,6 @@ npm update --save-dev && bower update --save
 - Made bootstrap custom menu data-toggle to collapse a unique value if multiple navbar widgets
 - Added navbar-transparent to _navigation.scss to be able to select transparent background and no borders
 - Add navbar style selector for Bootstrap nav menu widget so one can select navbar-default or navbar-transparent
-
-
 
 
 ##2015-05-12 Changes##

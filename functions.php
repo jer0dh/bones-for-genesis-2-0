@@ -34,7 +34,7 @@ require_once( CHILD_DIR . '/includes/structure/post.php' );
 require_once( CHILD_DIR . '/includes/structure/search.php' );
 require_once( CHILD_DIR . '/includes/structure/sidebar.php' );
 require_once( CHILD_DIR . '/includes/widgets/widgets.php' );
-
+require_once( CHILD_DIR . '/includes/structure/carousel.php' );
 // Shame
 require_once( CHILD_DIR . '/includes/shame.php' );					// For new code snippets that haven't been sorted and commented yet
 
@@ -42,3 +42,13 @@ require_once( CHILD_DIR . '/includes/shame.php' );					// For new code snippets 
 //TODO Integrate Media object css from bootstrap for comments
 //TODO Integrate thumbnail css from bootstrap for galleries
 
+function better_wpautop($pee){
+	return wpautop($pee,false);
+}
+
+
+
+remove_filter( 'the_content', 'wpautop' );
+add_filter( 'the_content', 'better_wpautop' , 99);
+add_filter( 'the_content', 'shortcode_unautop',100 );
+?>
