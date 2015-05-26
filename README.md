@@ -32,6 +32,8 @@ npm update --save-dev && bower update --save
 
 - Add a logo.png in the images folder if using the header image.
 
+- Add bootstrap.js and bootstrap.min.js to the js folder in the root of the project.
+
 - To deploy, run the grunt build job that will also minify the css and javascript and in WordPress dashboard go to Genesis | Theme settings to check use Production Assets to use the minified versions.  You should only need the build, fonts, images, includes, js, and svgs directories on your production server, along with any css, php files in the root of this project.
 
 
