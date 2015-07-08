@@ -100,9 +100,9 @@ function bfg_load_scripts() {
 	add_filter( 'script_loader_src', 'bfg_jquery_local_fallback', 10, 2 );
 
 	//Add Bootstrap.js from CDN
-	$src = $use_production_assets ? '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js' : '/js/bootstrap.js';
 	$stylesheet_dir = get_stylesheet_directory_uri();
-	wp_enqueue_script('bootstrap',$stylesheet_dir . $src,array( 'jquery' ),'3.3.4',true);
+	$src = $use_production_assets ? '//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js' : $stylesheet_dir .'/js/bootstrap.js';
+	wp_enqueue_script('bootstrap', $src,array( 'jquery' ),'3.3.4',true);
 
 	// Main script file (in footer)
 	$src = $use_production_assets ? '/build/js/scripts.min.js' : '/build/js/scripts.js';

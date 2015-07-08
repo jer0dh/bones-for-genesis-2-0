@@ -36,6 +36,8 @@ npm update --save-dev && bower update --save
 
 - To deploy, run the grunt build job that will also minify the css and javascript and in WordPress dashboard go to Genesis | Theme settings to check use Production Assets to use the minified versions.  You should only need the build, fonts, images, includes, js, and svgs directories on your production server, along with any css, php files in the root of this project.
 
+##2015-07-08##
+-Fixed path to bootstrap min CDN when production assets are used (header.php)
 
 ##2015-05-22##
 - Version 2.4.3
